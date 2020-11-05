@@ -3,7 +3,6 @@ var camera;
 var renderer;
 var velocity = 0.1;
 
-
 /*FUNCIONAMENTO BRAÇO DIREITO
 C = MEXE COTOVELO EIXO X
 ESPACO = MEXE OMBRO

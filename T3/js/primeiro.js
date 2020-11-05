@@ -1,9 +1,13 @@
 var scene;
 var camera;
 var renderer;
-
 var velocity = 0.1;
 
+
+/*FUNCIONAMENTO BRAÇO DIREITO
+C = MEXE COTOVELO EIXO X
+ESPACO = MEXE OMBRO
+V = MEXE COTOVELO EIXO Y*/
 
 var createACube = function() {
     var geometry = new THREE.BoxGeometry( 2, 10, 2 );
@@ -21,43 +25,38 @@ var createACube = function() {
 
     }
     var material = new THREE.MeshBasicMaterial( { color: 0xffffff, vertexColors: true } );
-    cube = new THREE.Mesh( geometry, material );
+    cube = new THREE.Mesh( geometry, material ); //Cria braço
     
 
     var geometry2 = new THREE.SphereGeometry(2, 32,32);
     var material2 = new THREE.MeshBasicMaterial( { color: 0xffffff} );
-    sphere = new THREE.Mesh(geometry2, material2);
+    sphere = new THREE.Mesh(geometry2, material2); //Cria ombro
     sphere.position.y-=5;
-    cube.add(sphere);
+    cube.add(sphere); //Adiciona o ombro ao braço
     
 
     pivot = new THREE.Group();
     pivot.position.set(0,0,0);
-    pivot.add(cube); //adicinou ombro ao pivo
+    pivot.add(cube); //Adicina braço ao pivo
     scene.add(pivot);
     cube.position.y+=pivot.position.x+5;
 
 
     var geometry3 = new THREE.SphereGeometry(2, 32,32); 
-    var material3 = new THREE.MeshBasicMaterial( { color: 0xD9CEAC} );
-    sphere2 = new THREE.Mesh(geometry3, material3);
-    cube.add(sphere2);
+    var material3 = new THREE.MeshBasicMaterial( { color: 0xffffff} );
+    sphere2 = new THREE.Mesh(geometry3, material3); //Cria cotovelo
+    cube.add(sphere2); //Adiciona cotovelo ao braço
     sphere2.position.y+=6;
 
     pivot2 = new THREE.Group();
     pivot2.position.set(0,0,0);
-    sphere2.add( pivot2 );
+    sphere2.add( pivot2 ); //Adiciona pivo ao cotovelo
 
     var geometry4 = new THREE.BoxGeometry( 2, 10, 2 ); 
     var material4 = new THREE.MeshBasicMaterial( { color: 0xD9CEAC} );
-    cubo2 = new THREE.Mesh( geometry4, material4 );
-    pivot2.add( cubo2 );
+    cubo2 = new THREE.Mesh( geometry4, material4 ); //Cria antebraço
+    pivot2.add( cubo2 ); //Adiciona antebraço ao pivo do cotovelo
     cubo2.position.y+=5;
-
-
-
-    
-
 };
 
 var init = function() {
@@ -76,7 +75,6 @@ var init = function() {
     render();
 
     document.addEventListener('keydown', onKeyDown ); 
-
     document.addEventListener('mousedown', onMouseDown ); //metodos de controle do mouser
     document.addEventListener('mouseup', onMouseUp ); 
     document.addEventListener('mousemove', onMouseMouse ); 
@@ -91,6 +89,7 @@ var render = function() {
 };
 
 var rotationVelocity = 0.1;
+var rotationVelocityY = 0.1;
 
 var onKeyDown = function(e){
     console.log(e.keyCode);
@@ -100,7 +99,7 @@ var onKeyDown = function(e){
     if (e.keyCode == 32){ //espaco
         
         console.log("Z: "+ pivot.rotation.z);
-        if (pivot.rotation.z > 1.7 || pivot.rotation.z < -1){
+        if (pivot.rotation.z > 3.8 || pivot.rotation.z < -0.2){
             rotationVelocity*=-1;
         }
         pivot.rotation.z+=rotationVelocity; 
@@ -114,6 +113,15 @@ var onKeyDown = function(e){
             rotationVelocity*=-1;
         }
         pivot2.rotation.z+=rotationVelocity; 
+    }
+
+    if (e.keyCode == 86){ //TECLA V
+        
+        console.log("Y: "+ pivot2.rotation.y);
+        if (pivot2.rotation.y > 0.1 || pivot2.rotation.y < -2.8){
+            rotationVelocityY*=-1;
+        }
+        pivot2.rotation.y+=rotationVelocityY; 
     }
 
     if (e.keyCode == 187){ // +

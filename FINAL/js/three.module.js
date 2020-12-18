@@ -1,5 +1,5 @@
 // threejs.org/license
-const REVISION = '122dev';
+const REVISION = '121dev';
 const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 const CullFaceNone = 0;
@@ -23906,9 +23906,9 @@ function WebGLRenderer( parameters ) {
 		currentRenderState = renderStates.get( scene, camera );
 		currentRenderState.init();
 
-		scene.traverseVisible( function ( object ) {
+		scene.traverse( function ( object ) {
 
-			if ( object.isLight && object.layers.test( camera.layers ) ) {
+			if ( object.isLight ) {
 
 				currentRenderState.pushLight( object );
 
@@ -34350,7 +34350,7 @@ const AnimationUtils = {
 		if ( referenceClip === undefined ) referenceClip = targetClip;
 		if ( fps === undefined || fps <= 0 ) fps = 30;
 
-		const numTracks = referenceClip.tracks.length;
+		const numTracks = targetClip.tracks.length;
 		const referenceTime = referenceFrame / fps;
 
 		// Make each track's values relative to the values at the reference frame
